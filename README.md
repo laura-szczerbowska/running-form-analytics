@@ -1,5 +1,6 @@
 # Platforma analityki biomechanicznej i telemetrii end-to-end
 
+
 Kompleksowy projekt analityki danych ruchowych (Time-Series & Sensor Fusion), integrujący dane telemetryczne IoT (binarne pliki Garmin .FIT / .ZIP) z niestrukturyzowanymi strumieniami wideo (Computer Vision). System realizuje pełny potok analityczny: od ekstrakcji i czyszczenia danych (ETL), przez wyznaczanie wskaźników kinematycznych (KPI), aż po automatyczne reguły decyzyjne i raport w aplikacji webowej.
 
 
@@ -26,14 +27,8 @@ Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości koń
 
 
 
-> ** Wytyczne dotyczące nagrań wejściowych
-
-Aby algorytmy estymacji sylwetki poprawnie śledziły punkty anatomiczne, materiały wideo muszą spełniać następujące warunki:
-
-* **Widok z boku (Side View):** Nagranie musi być wykonane **centralnie z boku, rejestrując biegacza z jego prawego profilu**. Kadr musi obejmować **całą postać** (od czubka głowy po stopy w pełnym kontakcie z podłożem).
-* **Widok od tyłu (Rear View):** Nagranie musi być wykonane **centralnie z tyłu na wysokości miednicy/kolan**. Kadr musi obejmować **całą postać** – od barków, przez miednicę, aż po podeszwy i zapiętki butów.
-
-**
+> **Wytyczne dotyczące nagrań wejściowych:**  
+> Aby zapewnić poprawną estymację punktów anatomicznych, nagranie musi obejmować **całą sylwetkę biegacza** i być zarejestrowane stabilnie w osi ruchu: w **widoku z boku** z prawego profilu (widoczne całe ciało od głowy po kontakt stóp z podłożem), a w **widoku od tyłu** centralnie na wysokości miednicy/kolan (widoczne punkty od barków po zapiętki i podeszwy butów).
 
 <br>
 
@@ -104,10 +99,18 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 ### 2) Płaszczyzna Strzałkowa (Rzut Boczny) – Kinematyka i Fuzja Sensorów
 * **Obliczanie kątów wewnętrznych stawów (Vector Geometry):** Wyznaczane z iloczynu skalarnego wektorów anatomicznych z zabezpieczeniem numerycznym (`clip` do [-1.0, 1.0] oraz epsilon = 1e-6):
   $$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\Vert\mathbf{ba}\Vert \Vert\mathbf{bc}\Vert + 10^{-6}}, -1.0, 1.0\right)\right)$$
+
+  
 * **Detekcja faz kroku (Event-Based Time-Series Slicing):** Moment lądowania (*initial contact*) izolowany jest poprzez wykrycie wyhamowania ruchu stopy w przód na bazie historii współrzędnych X stawu skokowego.
+
+  
 * **Detekcja overstridingu (Braking Force KPI):** Wartość kąta wyprostu kolana w momencie kontaktu > 170° flagowana jest jako anomalia techniczna (lądowanie przed środkiem ciężkości, generujące szkodliwe siły hamujące).
+
+  
 * **Fuzja sensoryczna (Leg Stiffness Index):** Wskaźnik łączący telemetrię zegarka z analizą wideo. Zestawia czas kontaktu z podłożem (GCT z pliku FIT w milisekundach) z dynamicznym zakresem ugięcia kolana (180° - kąt_minimalny z Computer Vision):
   $$\text{Stiffness} = \frac{50000}{GCT \times (180 - \theta_{\min})}$$
+
+  
 * **Oscylacja pionowa (Robust Dispersion Metric):** Wyznaczana z rozstępu międzycentylowego (P95 - P5) trajektorii pionowej biodra przeliczonego na centymetry, co eliminuje pojedyncze szumy detekcji.
 
 
@@ -177,9 +180,9 @@ if avg_knee_angle > 170:
 
 <br>
 
-```
-## 7. Architektura Projektu
 
+## 7. Architektura Projektu
+```
 fitform-gait-analytics/
 ├── static/                   # Wyjściowe nagrania z naniesionym HUD i assety
 │   ├── .gitkeep
