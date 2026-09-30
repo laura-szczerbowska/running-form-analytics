@@ -9,7 +9,7 @@ Kompleksowy projekt analityki danych ruchowych, integrujący dane telemetryczne 
 
 ## Prezentacja działania
 
-> **Materiały źródłowe:** Nagrania wideo wykorzystane do testów i demonstracji algorytmów pochodzą z kanału **BioMechanic** w serwisie YouTube.
+> **Materiały źródłowe:** Nagrania wideo wykorzystane do demonstracji algorytmów pochodzą z kanału **BioMechanic** w serwisie YouTube. Testy odbywały się na prywatnych nagraniach z bieżni.
 
 ### 1) Widok z boku
 Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości kończyny (Leg Stiffness).
@@ -17,6 +17,8 @@ Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości koń
 
 
 https://github.com/user-attachments/assets/a98aabef-e1fd-45e4-8d80-2c9be2a3783c
+
+
 
 
 
