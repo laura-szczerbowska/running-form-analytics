@@ -1,3 +1,7 @@
+<div align="right">
+  <a href="./README.pl.md">Polski</a> | <strong>English</strong>
+</div>
+
 # Platforma analityki biomechanicznej i telemetrii end-to-end
 
 
@@ -10,7 +14,7 @@ Kompleksowy projekt analityki danych ruchowych, integrujący dane telemetryczne 
 ## Prezentacja działania
 
 
-> **Materiały źródłowe:** Nagrania wideo wykorzystane do demonstracji algorytmów pochodzą z kanału **BioMechanic** w serwisie YouTube. Testy odbywały się na prywatnych nagraniach z bieżni.
+> **Materiały źródłowe:** Nagrania wideo wykorzystane do demonstracji algorytmów pochodzą z serwisu YouTube. Testy odbywały się na prywatnych nagraniach z bieżni.
 
 
 <br>
