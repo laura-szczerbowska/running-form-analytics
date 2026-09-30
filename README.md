@@ -88,7 +88,7 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 ### 1) Normalizacja Przestrzenna i Czyszczenie Szeregów Czasowych
 **Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark–biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
 
-    $$\text{px\_to\_cm} = \frac{\text{USER\_HEIGHT\_CM} \times 0.3}{\Vert\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert_2}$$
+$$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert{}_2}$$
 
 **Wygładzanie sygnału i redukcja drżenia (Noise Reduction):** Współrzędne węzłów szkieletowych oraz obliczane kąty poddawane są wygładzaniu średnią ruchomą z wykorzystaniem buforów kołowych FIFO (`collections.deque`, okno N=5). Zapobiega to fałszywym alertom przy detekcji faz kroku.
 
@@ -119,11 +119,17 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 
 ### 3) Płaszczyzna Czołowa (Rzut od Tyłu) – Segmentacja Osi i Analiza Asymetrii
 * **Segmentacja fazy podparcia (Stance Phase Filtering):** Pronacja i supinacja analizowane są wyłącznie w fazie obciążenia stopy, wyodrębnianej adaptacyjnym progowaniem percentylowym trajektorii Y pięty i stawu skokowego (eliminacja fazy lotu).
+
+  
 * **Kąt nachylenia stopy (Robust Directional Angularity):** Odchylenie wektora pięta–staw skokowy od pionu modelowane za pomocą `atan2`:
   $$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
   * Odchylenie < -12°: Nadmierna pronacja.
   * Odchylenie > +12°: Supinacja kompensacyjna.
+ 
+    
 * **Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
+
+  
 * **Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
   * **Asymetria strukturalna (Geometryczna):** Różnica w szczytowej wysokości uniesienia pięt w fazie lotu (> 3%) wskazuje na ograniczenia ruchomości lub dysproporcję siłową.
   * **Asymetria czasowo-kinetyczna (Telemetryczna):** Symetryczny tor ruchu przy nierównym czasie kontaktu z podłożem (|50 - Balans GCT| > 2%) wskazuje na odruchowe odciążanie jednej z kończyn.
