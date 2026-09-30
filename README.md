@@ -86,7 +86,11 @@ Raportowanie BI (Prezentacja syntetycznych wskaźników i rekomendacji w panelu 
 Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y) w ustrukturyzowany zbiór wskaźników kinematycznych odpornych na szum pomiarowy.
 
 
+<br>
+
+
 ### 1) Normalizacja Przestrzenna i Czyszczenie Szeregów Czasowych
+
 - **Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark - biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
 
 $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert{}_2}$$
@@ -118,6 +122,7 @@ $$\text{Stiffness} = \frac{50000}{\text{GCT} \times (180 - \theta_{\min})}$$
 
 - **Oscylacja pionowa (Robust Dispersion Metric):** Wyznaczana z rozstępu międzycentylowego (P95 - P5) trajektorii pionowej biodra przeliczonego na centymetry, co eliminuje pojedyncze szumy detekcji.
 
+
 <br>
 
 
@@ -137,9 +142,10 @@ $$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
 - **Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
 
 
-**Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
+- **Dwuścieżkowa klasyfikacja asymetrii:**
   * **Asymetria strukturalna (Geometryczna):** Różnica w szczytowej wysokości uniesienia pięt w fazie lotu (> 3%) wskazuje na ograniczenia ruchomości lub dysproporcję siłową.
   * **Asymetria czasowo-kinetyczna (Telemetryczna):** Symetryczny tor ruchu przy nierównym czasie kontaktu z podłożem (|50 - Balans GCT| > 2%) wskazuje na odruchowe odciążanie jednej z kończyn.
+
 
 <br>
 
