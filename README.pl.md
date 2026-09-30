@@ -1,5 +1,5 @@
 <div align="right">
-  <strong>Polski</strong> | <a href="./README.md">English</a>
+  <a href="./README.md">English</a> | <strong>Polski</strong>
 </div>
 
 # Platforma analityki biomechanicznej i telemetrii end-to-end
