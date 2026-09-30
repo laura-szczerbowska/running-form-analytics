@@ -82,6 +82,7 @@ Raportowanie BI (Prezentacja syntetycznych wskaźników i rekomendacji w panelu 
 
 ## 3. Przetwarzanie Danych, Inżynieria Cech (Feature Engineering) i Metodyka Obliczeniowa
 
+
 Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y) w ustrukturyzowany zbiór wskaźników kinematycznych odpornych na szum pomiarowy.
 
 
@@ -133,10 +134,10 @@ $$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
   * Odchylenie > +12°: Supinacja kompensacyjna.
 
 
-**Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
+- **Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
 
 
-- **Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
+**Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
   * **Asymetria strukturalna (Geometryczna):** Różnica w szczytowej wysokości uniesienia pięt w fazie lotu (> 3%) wskazuje na ograniczenia ruchomości lub dysproporcję siłową.
   * **Asymetria czasowo-kinetyczna (Telemetryczna):** Symetryczny tor ruchu przy nierównym czasie kontaktu z podłożem (|50 - Balans GCT| > 2%) wskazuje na odruchowe odciążanie jednej z kończyn.
 
