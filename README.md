@@ -1,5 +1,5 @@
 <div align="right">
-  <a href="./README.pl.md">Polski</a> | <strong>English</strong>
+  <strong>English</strong> | <a href="./README.pl.md">Polski</a>
 </div>
 
 # End-to-End Biomechanical Gait Analytics & Telemetry Platform
@@ -225,9 +225,32 @@ fitform-gait-analytics/
 
 ```
 
+
 <br>
 
+
 ## 8. Getting Started
+
+Clone the repository:
+
+```bash
+git clone [https://github.com/laura-szczerbowska/GaitAnalytics.git](https://github.com/laura-szczerbowska/GaitAnalytics.git)
+cd GaitAnalytics
+```
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+Run the development server:
+```bash
+python app.py
+```
+Open your browser and navigate to: http://127.0.0.1:5000
+
+
+<br>
+
+
 ## 9. Future Roadmap
 * Automated temporal offset synchronization (Auto-Sync Offset) between video streams and FIT telemetry based on initial acceleration peaks.
 * GPU acceleration support (CUDA / TensorRT) for high-framerate 4K video extraction (60/120 FPS).
