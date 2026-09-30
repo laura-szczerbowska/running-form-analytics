@@ -14,16 +14,18 @@ Kompleksowy projekt analityki danych ruchowych, integrujący dane telemetryczne 
 ### 1) Widok z boku
 Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości kończyny (Leg Stiffness).
 
-<p align="center">
-  <video src="static/video_record_side.mp4" controls width="750"></video>
-</p>
+
+
+https://github.com/user-attachments/assets/a98aabef-e1fd-45e4-8d80-2c9be2a3783c
+
+
 
 ### 2) Widok od tyłu
 Śledzenie stabilności miednicy, pronacji/supinacji stóp oraz asymetrii obciążenia lewa/prawa noga.
 
-<p align="center">
-  <video src="static/video_record_rear.mp4" controls width="750"></video>
-</p>
+
+
+https://github.com/user-attachments/assets/26275ffc-46dd-4f2d-8830-8d3b637db2e8
 
 
 
