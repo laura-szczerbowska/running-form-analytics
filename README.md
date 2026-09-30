@@ -26,13 +26,14 @@ Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości koń
 
 
 
-## Wytyczne dotyczące nagrań wejściowych
+> ** Wytyczne dotyczące nagrań wejściowych
 
 Aby algorytmy estymacji sylwetki poprawnie śledziły punkty anatomiczne, materiały wideo muszą spełniać następujące warunki:
 
 * **Widok z boku (Side View):** Nagranie musi być wykonane **centralnie z boku, rejestrując biegacza z jego prawego profilu**. Kadr musi obejmować **całą postać** (od czubka głowy po stopy w pełnym kontakcie z podłożem).
 * **Widok od tyłu (Rear View):** Nagranie musi być wykonane **centralnie z tyłu na wysokości miednicy/kolan**. Kadr musi obejmować **całą postać** – od barków, przez miednicę, aż po podeszwy i zapiętki butów.
 
+**
 
 <br>
 
@@ -87,9 +88,11 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 
 
 ### 1) Normalizacja Przestrzenna i Czyszczenie Szeregów Czasowych
-* **Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark–biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
-  $$\text{px\_to\_cm} = \frac{\text{USER\_HEIGHT\_CM} \times 0.3}{\Vert\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert_2}$$
-* **Wygładzanie sygnału i redukcja drżenia (Noise Reduction):** Współrzędne węzłów szkieletowych oraz obliczane kąty poddawane są wygładzaniu średnią ruchomą z wykorzystaniem buforów kołowych FIFO (`collections.deque`, okno N=5). Zapobiega to fałszywym alertom przy detekcji faz kroku.
+**Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark–biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
+
+    $$\text{px\_to\_cm} = \frac{\text{USER\_HEIGHT\_CM} \times 0.3}{\Vert\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert_2}$$
+
+**Wygładzanie sygnału i redukcja drżenia (Noise Reduction):** Współrzędne węzłów szkieletowych oraz obliczane kąty poddawane są wygładzaniu średnią ruchomą z wykorzystaniem buforów kołowych FIFO (`collections.deque`, okno N=5). Zapobiega to fałszywym alertom przy detekcji faz kroku.
 
 
 <br>
@@ -171,7 +174,7 @@ if avg_knee_angle > 170:
 
 <br>
 
-
+```
 ## 7. Architektura Projektu
 
 fitform-gait-analytics/
@@ -189,6 +192,7 @@ fitform-gait-analytics/
 ├── side_view_analysis.py     # Pipeline analizy rzutu bocznego
 ├── requirements.txt          # Zależności biblioteczne
 └── README.md                 # Dokumentacja techniczna projektu
+```
 
 
 <br>
