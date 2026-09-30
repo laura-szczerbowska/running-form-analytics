@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RunTechnique AI - Running Analysis Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f0e;
+      --bg3: #161a17;
+      --border: #2a302c;
+      --mint: #7fffd4;
+      --mint2: #4ecba4;
+      --sage: #a8c5a0;
+      --text: #e8ede9;
+      --muted: #7a8c7e;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .section-header {
+      text-align: left;
+      margin-bottom: 36px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 54px);
+      font-weight: 300;
+      line-height: 0.85;
+      color: var(--text);
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    /* FORM */
+    .analysis-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      background: #111412;
+      padding: 32px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-input {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    .form-input:focus {
+      border-color: rgba(127,255,212,0.5);
+      box-shadow: 0 0 0 3px rgba(127,255,212,0.07);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .radio-option input { display: none; }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .radio-option input:checked + .radio-label {
+      background: rgba(127,255,212,0.1);
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: var(--bg3);
+    }
+
+    .upload-zone:hover {
+      border-color: rgba(127,255,212,0.4);
+      background: rgba(127,255,212,0.03);
+    }
+
+    .upload-zone.has-file {
+      border-color: var(--mint);
+      background: rgba(127,255,212,0.05);
+    }
+
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(127,255,212,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .upload-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .upload-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--mint2), var(--mint));
+      color: #0d0f0e;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: 0.01em;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(127,255,212,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+
+    <!-- HEADER -->
+    <div class="section-header">
+      <h2 class="section-title">Free analysis<br/><em>of your running form.</em></h2>
+    </div>
+
+    <!-- FORM -->
+    <form class="analysis-form" action="/upload" method="post" enctype="multipart/form-data">
+
+      <!-- Height -->
+      <div class="form-group">
+        <label class="form-label" for="user_height">Height (cm)</label>
+        <input class="form-input" type="number" id="user_height" name="user_height" placeholder="e.g. 175" min="100" max="230" required />
+      </div>
+
+      <!-- Camera View Perspective -->
+      <div class="form-group">
+        <label class="form-label">Camera Perspective</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="view_type" id="view_side" value="side" checked />
+            <label class="radio-label" for="view_side">Side View</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="view_type" id="view_back" value="back" />
+            <label class="radio-label" for="view_back">Rear View</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Upload -->
+      <div class="form-group">
+        <label class="form-label">Video Recording (required)</label>
+        <div class="upload-zone" id="videoZone" onclick="document.getElementById('videoInput').click()">
+          <input id="videoInput" type="file" name="video" style="display:none" accept="video/mp4,video/quicktime,video/*">
+          <div class="upload-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="#7fffd4">
+              <polygon points="23 7 16 12 23 17 23 7"/>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+          </div>
+          <div class="upload-title" id="videoTitle">Upload running video</div>
+          <div class="upload-sub" id="videoSub">MP4 — max 500 MB</div>
+        </div>
+      </div>
+
+      <!-- Garmin Data Upload -->
+      <div class="form-group">
+        <label class="form-label">Watch Data (optional)</label>
+        <div class="upload-zone" id="garminZone" onclick="document.getElementById('garminInput').click()">
+          <input id="garminInput" type="file" name="garmin_file" style="display:none" accept=".fit,.zip" />
+          <div class="upload-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="#7fffd4">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="upload-title" id="garminTitle">Upload watch data file</div>
+          <div class="upload-sub" id="garminSub">.FIT — biometric telemetry</div>
+        </div>
+      </div>
+
+      <button class="btn-submit" type="submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        Run Analysis
+      </button>
+    </form>
+
+  </div>
+
+  <script>
+    function setupFileUpload(inputId, titleId, subId, zoneId) {
+      document.getElementById(inputId).addEventListener('change', function() {
+        if (this.files[0]) {
+          document.getElementById(titleId).textContent = this.files[0].name;
+          document.getElementById(subId).textContent = 'File ready to upload';
+          document.getElementById(zoneId).classList.add('has-file');
+        }
+      });
+    }
+
+    setupFileUpload('videoInput', 'videoTitle', 'videoSub', 'videoZone');
+    setupFileUpload('garminInput', 'garminTitle', 'garminSub', 'garminZone');
+  </script>
+</body>
+</html>
