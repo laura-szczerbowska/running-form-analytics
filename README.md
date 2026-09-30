@@ -2,9 +2,11 @@
 
 Kompleksowy projekt analityki danych ruchowych (Time-Series & Sensor Fusion), integrujący dane telemetryczne IoT (binarne pliki Garmin .FIT / .ZIP) z niestrukturyzowanymi strumieniami wideo (Computer Vision). System realizuje pełny potok analityczny: od ekstrakcji i czyszczenia danych (ETL), przez wyznaczanie wskaźników kinematycznych (KPI), aż po automatyczne reguły decyzyjne i raport w aplikacji webowej.
 
----
 
-## Prezentacja działania (Wideo Demo)
+<br>
+
+
+## Prezentacja działania
 
 > **Materiały źródłowe:** Nagrania wideo wykorzystane do testów i demonstracji algorytmów pochodzą z kanału **BioMechanic** w serwisie YouTube.
 
@@ -12,18 +14,16 @@ Kompleksowy projekt analityki danych ruchowych (Time-Series & Sensor Fusion), in
 Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości kończyny (Leg Stiffness).
 
 <p align="center">
-  <video src="static/result_running_side.mp4" controls width="750"></video>
+  <video src="static/video_record_side.mp4" controls width="750"></video>
 </p>
 
 ### 2. Widok od tyłu (Płaszczyzna czołowa)
 Śledzenie stabilności miednicy, pronacji/supinacji stóp oraz asymetrii obciążenia lewa/prawa noga.
 
 <p align="center">
-  <video src="static/result_running_rear.mp4" controls width="750"></video>
+  <video src="static/video_record_rear.mp4" controls width="750"></video>
 </p>
 
-
----
 
 
 ## Wytyczne dotyczące nagrań wejściowych
@@ -34,7 +34,8 @@ Aby algorytmy estymacji sylwetki poprawnie śledziły punkty anatomiczne, materi
 * **Widok od tyłu (Rear View):** Nagranie musi być wykonane **centralnie z tyłu na wysokości miednicy/kolan**. Kadr musi obejmować **całą postać** – od barków, przez miednicę, aż po podeszwy i zapiętki butów.
 
 
----
+<br>
+
 
 ## 1. Problem Biznesowy i Kontekst Analityczny
 
@@ -54,7 +55,7 @@ Aplikacja wdraża zautomatyzowany potok analityczny, który:
 4. Generuje zautomatyzowany raport decyzyjny (**Prescriptive Analytics**) wskazujący przyczyny źródłowe asymetrii i ryzyka kontuzji.
 
 
----
+<br>
 
 
 ## 2. Architektura Przepływu Danych i Pipeline ETL
@@ -76,7 +77,9 @@ Decision Intelligence (Reguły biznesowe, wykrywanie anomalii i klasyfikacja ryz
 Raportowanie BI (Prezentacja syntetycznych wskaźników i rekomendacji w panelu Flask)
 ```
 
----
+
+<br>
+
 
 ## 3. Przetwarzanie Danych, Inżynieria Cech (Feature Engineering) i Metodyka Obliczeniowa
 
@@ -89,6 +92,9 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 * **Wygładzanie sygnału i redukcja drżenia (Noise Reduction):** Współrzędne węzłów szkieletowych oraz obliczane kąty poddawane są wygładzaniu średnią ruchomą z wykorzystaniem buforów kołowych FIFO (`collections.deque`, okno N=5). Zapobiega to fałszywym alertom przy detekcji faz kroku.
 
 
+<br>
+
+
 ### 2) Płaszczyzna Strzałkowa (Rzut Boczny) – Kinematyka i Fuzja Sensorów
 * **Obliczanie kątów wewnętrznych stawów (Vector Geometry):** Wyznaczane z iloczynu skalarnego wektorów anatomicznych z zabezpieczeniem numerycznym (`clip` do [-1.0, 1.0] oraz epsilon = 1e-6):
   $$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\Vert\mathbf{ba}\Vert \Vert\mathbf{bc}\Vert + 10^{-6}}, -1.0, 1.0\right)\right)$$
@@ -97,6 +103,9 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 * **Fuzja sensoryczna (Leg Stiffness Index):** Wskaźnik łączący telemetrię zegarka z analizą wideo. Zestawia czas kontaktu z podłożem (GCT z pliku FIT w milisekundach) z dynamicznym zakresem ugięcia kolana (180° - kąt_minimalny z Computer Vision):
   $$\text{Stiffness} = \frac{50000}{GCT \times (180 - \theta_{\min})}$$
 * **Oscylacja pionowa (Robust Dispersion Metric):** Wyznaczana z rozstępu międzycentylowego (P95 - P5) trajektorii pionowej biodra przeliczonego na centymetry, co eliminuje pojedyncze szumy detekcji.
+
+
+<br>
 
 
 ### 3) Płaszczyzna Czołowa (Rzut od Tyłu) – Segmentacja Osi i Analiza Asymetrii
@@ -110,7 +119,9 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
   * **Asymetria strukturalna (Geometryczna):** Różnica w szczytowej wysokości uniesienia pięt w fazie lotu (> 3%) wskazuje na ograniczenia ruchomości lub dysproporcję siłową.
   * **Asymetria czasowo-kinetyczna (Telemetryczna):** Symetryczny tor ruchu przy nierównym czasie kontaktu z podłożem (|50 - Balans GCT| > 2%) wskazuje na odruchowe odciążanie jednej z kończyn.
 
----
+
+<br>
+
 
 ## 4. Benchmark i Diagnostyka Biomechaniczna
 
@@ -128,26 +139,27 @@ Każda metryka posiada zdefiniowane progi tolerancji. Ich przekroczenie generuje
 | **Przechylenie miednicy** | Tylna | MediaPipe | < 4.0° | > 5.0° (Pelvic Drop) | Niewydolność mięśnia pośladkowego średniego |
 | **Balans GCT (L/R)** | Tylna | Garmin FIT | 49.0% – 51.0% | Odchylenie > 2.0% | Nierównomierne przenoszenie obciążeń uderzeniowych |
 
----
+
+<br>
+
 
 ## 5. Decision Intelligence & Actionable Insights
 
-Zamiast surowych wykresów, system implementuje warstwę analityki preskryptywnej (Prescriptive Analytics). Zidentyfikowane odchylenia są natychmiast przekładane na gotowe wskazówki trenerskie:
+Zamiast surowych wykresów, system implementuje warstwę analityki preskryptywnej. Zidentyfikowane odchylenia są natychmiast przekładane na gotowe wskazówki trenerskie:
 
 ```python
 # Przykład reguły w silniku analityki preskryptywnej (side_view_analysis.py)
-if avg_l > 170:
+if avg_knee_angle > 170:
     advice.append({
-        "issue": "Overstriding (landing with an excessively straight knee)",
-        "consequence": (
-            "Landing far ahead of the center of mass generates braking forces"
-            " and increases knee joint stress."
-        ),
-        "fix": "Shorten your stride and increase cadence by approximately 5%."
+        "issue": "Overstriding (lądowanie z nadmiernie wyprostowanym kolanem)",
+        "consequence": "Lądowanie przed środkiem ciężkości generuje siły hamujące i przeciąża staw kolanowy.",
+        "fix": "Skróć krok i zwiększ kadencję o około 5%."
     })
 ```
 
----
+
+<br>
+
 
 ## 6. Stos Technologiczny
 * **Język bazowy**: Python 3.10+
@@ -155,6 +167,9 @@ if avg_l > 170:
 * **ETL & Data Ingestion**: fitparse (dekodowanie binarnego formatu Garmin FIT), OpenCV
 * **Feature Extraction & Pose Estimation**: MediaPipe Pose (Model Complexity 2)
 * **Prezentacja & Dashboard**: Flask, Jinja2, HTML5/CSS, HUD Overlay
+
+
+<br>
 
 
 ## 7. Architektura Projektu
@@ -176,6 +191,9 @@ fitform-gait-analytics/
 └── README.md                 # Dokumentacja techniczna projektu
 
 
+<br>
+
+
 ## 8. Jak uruchomić projekt
 
 Klonowanie repozytorium:
@@ -195,6 +213,9 @@ python app.py
 Aplikacja będzie dostępna pod adresem: http://127.0.0.1:5000
 
 
+<br>
+
+
 ## 9. Rozwój Projektu
 * Automatyczna kalibracja przesunięcia czasowego pomiędzy wideo a plikiem .FIT na bazie wykrywania pierwszego kroku.
 * Wdrożenie akceleracji GPU (CUDA / TensorRT) dla ekstrakcji klatek MediaPipe w rozdzielczości 4K przy 60/120 FPS.
@@ -202,7 +223,10 @@ Aplikacja będzie dostępna pod adresem: http://127.0.0.1:5000
 * Eksport raportu sesji biegowej do formatu PDF z wykresami zmian kątów w czasie.
 
 
+<br>
+
+
 ## 10. Kluczowe Wnioski Inżynieryjne
-* Jakość danych a modelowanie (Garbage In, Garbage Out): Surowe współrzędne bez progowania generują szum przy dynamicznym ruchu kończyn. Zastosowanie buforów FIFO i progowania odległościowego ustabilizowało wariancję odczytów kątów o ponad 30%.
-* Wartość analityczna z Sensor Fusion: Samo wideo przy standardowym klatkażu nie pozwala na precyzyjny pomiar milisekundowego kontaktu z podłożem, a zegarek Garmin nie widzi kątów w stawach. Fuzja obu strumieni umożliwiła wyznaczenie wskaźnika sztywności (Leg Stiffness Index).
-* Automatyzacja wnioskowania: Zastąpienie surowych tabel zautomatyzowanymi regułami diagnostycznymi pozwala na natychmiastową interpretację wyników bezpośrednio po przetworzeniu sesji.
+* **Jakość danych a modelowanie (Garbage In, Garbage Out)**: Surowe współrzędne bez progowania generują szum przy dynamicznym ruchu kończyn. Zastosowanie buforów FIFO i progowania odległościowego ustabilizowało wariancję odczytów kątów o ponad 30%.
+* **Wartość analityczna z Sensor Fusion**: Samo wideo przy standardowym klatkażu nie pozwala na precyzyjny pomiar milisekundowego kontaktu z podłożem, a zegarek Garmin nie widzi kątów w stawach. Fuzja obu strumieni umożliwiła wyznaczenie wskaźnika sztywności (Leg Stiffness Index).
+* **Automatyzacja wnioskowania**: Zastąpienie surowych tabel zautomatyzowanymi regułami diagnostycznymi pozwala na natychmiastową interpretację wyników bezpośrednio po przetworzeniu sesji.
