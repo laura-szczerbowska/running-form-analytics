@@ -1,7 +1,7 @@
 # Platforma analityki biomechanicznej i telemetrii end-to-end
 
 
-Kompleksowy projekt analityki danych ruchowych (Time-Series & Sensor Fusion), integrujący dane telemetryczne IoT (binarne pliki Garmin .FIT / .ZIP) z niestrukturyzowanymi strumieniami wideo (Computer Vision). System realizuje pełny potok analityczny: od ekstrakcji i czyszczenia danych (ETL), przez wyznaczanie wskaźników kinematycznych (KPI), aż po automatyczne reguły decyzyjne i raport w aplikacji webowej.
+Kompleksowy projekt analityki danych ruchowych, integrujący dane telemetryczne IoT (binarne pliki Garmin .FIT / .ZIP) z niestrukturyzowanymi strumieniami wideo (Computer Vision). System realizuje pełny potok analityczny: od ekstrakcji i czyszczenia danych (ETL), przez wyznaczanie wskaźników kinematycznych (KPI), aż po automatyczne reguły decyzyjne i raport w aplikacji webowej.
 
 
 <br>
@@ -38,7 +38,7 @@ Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości koń
 
 W analizie biomechaniki sportowej proces wnioskowania cierpi na brak integracji odizolowanych źródeł danych:
 
-* **Silosy danych (Data Silos):** Urządzenia telemetryczne (np. Garmin) rejestrują czas kontaktu z podłożem (GCT) i kadencję, ale działają w izolacji od przestrzennego układu anatomicznego biegacza.
+* **Silosy danych:** Urządzenia telemetryczne (np. Garmin) rejestrują czas kontaktu z podłożem (GCT) i kadencję, ale działają w izolacji od przestrzennego układu anatomicznego biegacza.
 * **Niewidoczne anomalie dynamiczne:** Kluczowe wady biomechaniczne (np. overstriding, dynamiczny opad miednicy, kompensacyjna pronacja) trwają ułamki sekund i umykają tradycyjnym agregacjom statystycznym bez powiązania z obrazem.
 * **Wysoki koszt aparatury pomiarowej:** Dostęp do laboratoryjnych systemów motion-capture (np. Vicon) jest zaporowy cenowo dla klubów i biegaczy amatorów.
 
