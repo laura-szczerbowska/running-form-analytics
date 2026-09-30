@@ -48,6 +48,9 @@ W analizie biomechaniki sportowej proces wnioskowania cierpi na brak integracji 
 * **Wysoki koszt aparatury pomiarowej:** Dostęp do laboratoryjnych systemów motion-capture (np. Vicon) jest zaporowy cenowo dla klubów i biegaczy amatorów.
 
 
+<br>
+
+
 ### Rozwiązanie Analityczne:
 Aplikacja wdraża zautomatyzowany potok analityczny, który:
 1. Integruje szeregi czasowe z wearables z przestrzenną detekcją punktów kluczowych (**MediaPipe Pose**).
