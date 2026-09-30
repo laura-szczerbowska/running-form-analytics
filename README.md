@@ -11,14 +11,14 @@ Kompleksowy projekt analityki danych ruchowych (Time-Series & Sensor Fusion), in
 
 > **Materiały źródłowe:** Nagrania wideo wykorzystane do testów i demonstracji algorytmów pochodzą z kanału **BioMechanic** w serwisie YouTube.
 
-### 1. Widok z boku (Płaszczyzna strzałkowa)
+### 1) Widok z boku
 Ocena lądowania, pochylenia tułowia, oscylacji pionowej i sprężystości kończyny (Leg Stiffness).
 
 <p align="center">
   <video src="static/video_record_side.mp4" controls width="750"></video>
 </p>
 
-### 2. Widok od tyłu (Płaszczyzna czołowa)
+### 2) Widok od tyłu
 Śledzenie stabilności miednicy, pronacji/supinacji stóp oraz asymetrii obciążenia lewa/prawa noga.
 
 <p align="center">
@@ -86,7 +86,7 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 
 
 ### 1) Normalizacja Przestrzenna i Czyszczenie Szeregów Czasowych
-**Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark–biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
+**Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark - biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
 
 $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert{}_2}$$
 
@@ -96,44 +96,41 @@ $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\
 <br>
 
 
-### 2) Płaszczyzna Strzałkowa (Rzut Boczny) – Kinematyka i Fuzja Sensorów
-* **Obliczanie kątów wewnętrznych stawów (Vector Geometry):** Wyznaczane z iloczynu skalarnego wektorów anatomicznych z zabezpieczeniem numerycznym (`clip` do [-1.0, 1.0] oraz epsilon = 1e-6):
-  $$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\Vert\mathbf{ba}\Vert \Vert\mathbf{bc}\Vert + 10^{-6}}, -1.0, 1.0\right)\right)$$
+### 2) Płaszczyzna Strzałkowa (Rzut Boczny) - Kinematyka i Fuzja Sensorów
 
-  
-* **Detekcja faz kroku (Event-Based Time-Series Slicing):** Moment lądowania (*initial contact*) izolowany jest poprzez wykrycie wyhamowania ruchu stopy w przód na bazie historii współrzędnych X stawu skokowego.
+**Obliczanie kątów wewnętrznych stawów (Vector Geometry):** Wyznaczane z iloczynu skalarnego wektorów anatomicznych z zabezpieczeniem numerycznym (`clip` do [-1.0, 1.0] oraz epsilon = 1e-6):
 
-  
-* **Detekcja overstridingu (Braking Force KPI):** Wartość kąta wyprostu kolana w momencie kontaktu > 170° flagowana jest jako anomalia techniczna (lądowanie przed środkiem ciężkości, generujące szkodliwe siły hamujące).
+$$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\Vert\mathbf{ba}\Vert \Vert\mathbf{bc}\Vert + 10^{-6}}, -1.0, 1.0\right)\right)$$
 
-  
-* **Fuzja sensoryczna (Leg Stiffness Index):** Wskaźnik łączący telemetrię zegarka z analizą wideo. Zestawia czas kontaktu z podłożem (GCT z pliku FIT w milisekundach) z dynamicznym zakresem ugięcia kolana (180° - kąt_minimalny z Computer Vision):
-  $$\text{Stiffness} = \frac{50000}{GCT \times (180 - \theta_{\min})}$$
+**Detekcja faz kroku (Event-Based Time-Series Slicing):** Moment lądowania (*initial contact*) izolowany jest poprzez wykrycie wyhamowania ruchu stopy w przód na bazie historii współrzędnych X stawu skokowego.
 
-  
-* **Oscylacja pionowa (Robust Dispersion Metric):** Wyznaczana z rozstępu międzycentylowego (P95 - P5) trajektorii pionowej biodra przeliczonego na centymetry, co eliminuje pojedyncze szumy detekcji.
+**Detekcja overstridingu (Braking Force KPI):** Wartość kąta wyprostu kolana w momencie kontaktu > 170° flagowana jest jako anomalia techniczna (lądowanie przed środkiem ciężkości, generujące szkodliwe siły hamujące).
 
+**Fuzja sensoryczna (Leg Stiffness Index):** Wskaźnik łączący telemetrię zegarka z analizą wideo. Zestawia czas kontaktu z podłożem (GCT z pliku FIT w milisekundach) z dynamicznym zakresem ugięcia kolana ($180^\circ - \theta_{\min}$ z Computer Vision):
+
+$$\text{Stiffness} = \frac{50000}{\text{GCT} \times (180 - \theta_{\min})}$$
+
+**Oscylacja pionowa (Robust Dispersion Metric):** Wyznaczana z rozstępu międzycentylowego (P95 - P5) trajektorii pionowej biodra przeliczonego na centymetry, co eliminuje pojedyncze szumy detekcji.
 
 <br>
 
 
-### 3) Płaszczyzna Czołowa (Rzut od Tyłu) – Segmentacja Osi i Analiza Asymetrii
-* **Segmentacja fazy podparcia (Stance Phase Filtering):** Pronacja i supinacja analizowane są wyłącznie w fazie obciążenia stopy, wyodrębnianej adaptacyjnym progowaniem percentylowym trajektorii Y pięty i stawu skokowego (eliminacja fazy lotu).
+### 3) Płaszczyzna Czołowa (Rzut od Tyłu) - Segmentacja Osi i Analiza Asymetrii
 
-  
-* **Kąt nachylenia stopy (Robust Directional Angularity):** Odchylenie wektora pięta–staw skokowy od pionu modelowane za pomocą `atan2`:
-  $$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
+**Segmentacja fazy podparcia (Stance Phase Filtering):** Pronacja i supinacja analizowane są wyłącznie w fazie obciążenia stopy, wyodrębnianej adaptacyjnym progowaniem percentylowym trajektorii Y pięty i stawu skokowego (eliminacja fazy lotu).
+
+  **Kąt nachylenia stopy (Robust Directional Angularity):** Odchylenie wektora pięta-staw skokowy od pionu modelowane za pomocą `atan2`:
+
+$$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
+
   * Odchylenie < -12°: Nadmierna pronacja.
   * Odchylenie > +12°: Supinacja kompensacyjna.
- 
-    
-* **Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
 
-  
-* **Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
+**Opadanie miednicy (Pelvic Drop):** Kąt nachylenia wektora łączącego lewe i prawe biodro względem osi poziomej.
+
+**Dwuścieżkowa klasyfikacja asymetrii (Root-Cause Analysis):**
   * **Asymetria strukturalna (Geometryczna):** Różnica w szczytowej wysokości uniesienia pięt w fazie lotu (> 3%) wskazuje na ograniczenia ruchomości lub dysproporcję siłową.
   * **Asymetria czasowo-kinetyczna (Telemetryczna):** Symetryczny tor ruchu przy nierównym czasie kontaktu z podłożem (|50 - Balans GCT| > 2%) wskazuje na odruchowe odciążanie jednej z kończyn.
-
 
 <br>
 
@@ -144,15 +141,15 @@ Każda metryka posiada zdefiniowane progi tolerancji. Ich przekroczenie generuje
 
 | Wskaźnik (KPI) | Płaszczyzna | Źródło Danych | Przedział Prawidłowy | Próg Alarmowy | Wpływ na Efektywność / Ryzyko |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Kadencja (SPM)** | Boczna | AI / Garmin FIT | 170 – 185 SPM | < 165 lub > 195 SPM | Nieoptymalna długość kroku, straty energii |
-| **Kąt kolana przy lądowaniu** | Boczna | MediaPipe | 150° – 168° | > 170° (Overstriding) | Siły hamujące, przeciążenie stawu rzepkowo-udowego |
-| **Oscylacja pionowa** | Boczna | MediaPipe (cm) | 6.0 – 9.5 cm | > 10.0 cm | Marnowanie energii na wektor pionowy zamiast poziomy |
-| **Pochylenie tułowia** | Boczna | MediaPipe | 5° – 10° | < 3° lub > 12° | Niewłaściwe wykorzystanie grawitacji, przeciążenia lędźwiowe |
-| **Leg Stiffness Index** | Boczna | Sensor Fusion | 3.5 – 6.0 | < 3.5 (Low Stiffness) | Zapadanie się w podporze, wydłużony kontakt z podłożem |
-| **Kąt ugięcia ramion** | Boczna | MediaPipe | 80° – 95° | < 60° lub > 105° | Napięcia obręczy barkowej, zaburzenie rytmu wahadła |
+| **Kadencja (SPM)** | Boczna | AI / Garmin FIT | 170 - 185 SPM | < 165 lub > 195 SPM | Nieoptymalna długość kroku, straty energii |
+| **Kąt kolana przy lądowaniu** | Boczna | MediaPipe | 150° - 168° | > 170° (Overstriding) | Siły hamujące, przeciążenie stawu rzepkowo-udowego |
+| **Oscylacja pionowa** | Boczna | MediaPipe (cm) | 6.0 - 9.5 cm | > 10.0 cm | Marnowanie energii na wektor pionowy zamiast poziomy |
+| **Pochylenie tułowia** | Boczna | MediaPipe | 5° - 10° | < 3° lub > 12° | Niewłaściwe wykorzystanie grawitacji, przeciążenia lędźwiowe |
+| **Leg Stiffness Index** | Boczna | Sensor Fusion | 3.5 - 6.0 | < 3.5 (Low Stiffness) | Zapadanie się w podporze, wydłużony kontakt z podłożem |
+| **Kąt ugięcia ramion** | Boczna | MediaPipe | 80° - 95° | < 60° lub > 105° | Napięcia obręczy barkowej, zaburzenie rytmu wahadła |
 | **Pronacja / Supinacja** | Tylna | MediaPipe | -12° do +12° | < -12° lub > +12° | Ryzyko kontuzji rozcięgna podeszwowego / ścięgna Achillesa |
 | **Przechylenie miednicy** | Tylna | MediaPipe | < 4.0° | > 5.0° (Pelvic Drop) | Niewydolność mięśnia pośladkowego średniego |
-| **Balans GCT (L/R)** | Tylna | Garmin FIT | 49.0% – 51.0% | Odchylenie > 2.0% | Nierównomierne przenoszenie obciążeń uderzeniowych |
+| **Balans GCT (L/R)** | Tylna | Garmin FIT | 49.0% - 51.0% | Odchylenie > 2.0% | Nierównomierne przenoszenie obciążeń uderzeniowych |
 
 
 <br>
