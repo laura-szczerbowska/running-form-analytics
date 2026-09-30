@@ -93,6 +93,7 @@ Warstwa analityczna przekształca surowe szeregi czasowe współrzędnych (X, Y)
 
 - **Dynamiczne skalowanie metryczne (Feature Scaling):** Aby uniezależnić analizę od odległości biegacza od obiektywu, wprowadzono antropometryczną normalizację jednostek (piksele -> centymetry). Wzorcem kalibracyjnym jest odcinek tułowia (bark - biodro), stanowiący biologiczny niezmiennik (~30% wzrostu użytkownika):
 
+
 $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\text{bark}} - \mathbf{p}_{\text{biodro}}\Vert{}_2}$$
 
 
@@ -106,6 +107,7 @@ $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert{}\mathbf{p}_{\
 
 - **Obliczanie kątów wewnętrznych stawów (Vector Geometry):** Wyznaczane z iloczynu skalarnego wektorów anatomicznych z zabezpieczeniem numerycznym (`clip` do [-1.0, 1.0] oraz epsilon = 1e-6):
 
+
 $$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\Vert\mathbf{ba}\Vert \Vert\mathbf{bc}\Vert + 10^{-6}}, -1.0, 1.0\right)\right)$$
 
 
@@ -116,6 +118,7 @@ $$\theta = \arccos\left(\text{clip}\left(\frac{\mathbf{ba} \cdot \mathbf{bc}}{\V
 
 
 - **Fuzja sensoryczna (Leg Stiffness Index):** Wskaźnik łączący telemetrię zegarka z analizą wideo. Zestawia czas kontaktu z podłożem (GCT z pliku FIT w milisekundach) z dynamicznym zakresem ugięcia kolana ($180^\circ - \theta_{\min}$ z Computer Vision):
+
 
 $$\text{Stiffness} = \frac{50000}{\text{GCT} \times (180 - \theta_{\min})}$$
 
@@ -133,7 +136,9 @@ $$\text{Stiffness} = \frac{50000}{\text{GCT} \times (180 - \theta_{\min})}$$
 
 - **Kąt nachylenia stopy (Robust Directional Angularity):** Odchylenie wektora pięta-staw skokowy od pionu modelowane za pomocą `atan2`:
 
+
 $$\text{Tilt} = \text{degrees}(\text{arctan2}(dy, dx)) + 90^\circ$$
+
 
   * Odchylenie < -12°: Nadmierna pronacja.
   * Odchylenie > +12°: Supinacja kompensacyjna.
