@@ -106,7 +106,7 @@ $$\text{px to cm} = \frac{\text{USER HEIGHT CM} \times 0.3}{\Vert\mathbf{p}_{\te
 <br>
 
 
-### 2) Sagittal Plane (Side View) — Kinematics & Sensor Fusion
+### 2) Sagittal Plane (Side View) - Kinematics & Sensor Fusion
 
 - **Joint Angle Computation (Vector Geometry):** Derived from vector dot products with numerical stability clipping (bounded to $[-1.0, 1.0]$ with an epsilon of $10^{-6}$):
 
@@ -130,7 +130,7 @@ $$\text{Stiffness} = \frac{50000}{\text{GCT} \times (180 - \theta_{\min})}$$
 <br>
 
 
-### 3) Frontal Plane (Rear View) — Segment Alignment & Asymmetry
+### 3) Frontal Plane (Rear View) - Segment Alignment & Asymmetry
 
 - **Stance Phase Filtering:** Pronation and supination are isolated exclusively during weight-bearing stance, identified via dynamic thresholding of vertical heel and ankle trajectories.
 
